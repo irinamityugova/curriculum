@@ -6,7 +6,17 @@
  */
 
 const solution = (a, b) => {
-  return 0;
+  const greatCmnDenom=(num1, num2)=> {
+    //both numbers, divided by one number without remainder, otherwise, 1
+    denom=1;
+    for(let i=2; i<=Math.min(a, b); i++){
+      if(num1%i===0 && num2%i===0){
+        denom = i;
+      }
+    }
+    return denom;
+  };
+  return greatCmnDenom(a, b);
 };
 
 module.exports = {
