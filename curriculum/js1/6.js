@@ -6,7 +6,16 @@
  */
 
 const solution = (a) => {
-  return 0;
+  const getDivisors = (num) => {
+    let sum=0;
+    for(let i=2; i<num; i++){
+      if(num%i===0){
+        sum+=i;
+      }
+    }
+  return sum;
+  };
+  return getDivisors(a);
 };
 
 module.exports = {
