@@ -6,8 +6,23 @@
  * @returns {array}
  */
 
-const solution = (a) => {
-  return [];
+const isPrime = (num) => {   //return if num isPrime              
+  let count = 0;                                                                                                               
+  for(let i=2; i<num; i++){                                                                                                       
+      if(num%i===0){                                                                                                                  
+      count+=1;                                                                                                                  
+      }
+  }  
+  if(num>1 && count===0){
+    return true;
+  }
+  return false;
+}  
+
+const solution = (a, i=0) => {
+  if(i===a.length)return a;
+  if(!isPrime(a[i])) a[i]=1;
+  return solution(a, i+1);
 };
 
 module.exports = {
