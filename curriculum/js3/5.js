@@ -5,9 +5,12 @@
  * @return {nothing}
  **/
 
-const solution = (a,b)=>{
-  return;
-}
+const solution = (obj, fn, i=0, keys=Object.keys(obj)) => {
+   if(keys[i]===undefined) return;
+   key=keys[i];
+   fn(key, obj[key]);
+   return solution(obj, fn, i+1, keys)
+};
 module.exports = {
   solution
 }
