@@ -14,10 +14,14 @@
  * @returns {number}
 */
 
-const solution = (a)=>{
-  return 0;
+const solution = (node, max = node.v) => {
+  if(node.next===undefined) return max;
+  if(node.v> node.next.v){
+      max = node.v;
+  }
+  return solution(node.next, max);
 };
 
 module.exports = {
-  solution,
+   solution,
 };
