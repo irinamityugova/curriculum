@@ -4,8 +4,11 @@
  * @returns {number}
  */
 
-const solution = (a) => {
-  return 0;
+const solution = (a, i=0, accum=a[0]) => {
+  if(a.length===0) return '';
+  if(i===a.length) return accum;
+  accum=Math.max(accum, a[i])
+  return solution(a, i+1, accum);
 };
 
 module.exports = {
