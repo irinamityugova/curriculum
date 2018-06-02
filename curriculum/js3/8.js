@@ -16,8 +16,11 @@
  * @returns {boolean}
 */
 
-const solution = (a)=>{
-  return true;
+const solution = (node, tracking = {}) => {
+  if(tracking[node.v]) return true;
+  if(node.next===undefined) return false;
+  tracking[node.v]=node;
+  return solution(node.next, tracking);
 };
 
 module.exports = {
