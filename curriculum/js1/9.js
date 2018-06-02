@@ -5,7 +5,14 @@
  */
 
 const solution = (a) => {
-  return 0;
+  const nextMultSeven = (num) => {
+    for(let i=num+1; i<=num*7;i++){
+      if(i%7===0){
+        return i;
+      }
+    }
+  };
+  return nextMultSeven(a);
 };
 
 module.exports = {
