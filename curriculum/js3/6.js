@@ -9,9 +9,17 @@
  * @returns {object} c
 */
 
-const solution = (a, b)=>{
-  return c;
-};
+const solution = (obj, fn, i=0, result={}, keys=Object.keys(obj))=>{
+    if(i===keys.length) return result;           
+    key=keys[i];    
+    if(fn(key, obj[key])){
+          result[key] = obj[key];
+        };       
+    console.log(result);                                   
+  return solution(obj, fn, i+1,result);
+}
+
+
 
 module.exports = {
   solution,
