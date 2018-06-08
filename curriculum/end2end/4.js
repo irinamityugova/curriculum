@@ -1,40 +1,56 @@
 const path = require('path');
 const fs=require('fs');
 
-const fromDir = (myPath, i=0, result = [], files=fs.readdirSync(myPath), filePath=myPath) => {
-  if(files === undefined) return result; 
-  /* Incomplete: Function Should return 
-   * when there are no files left in the root directory. 
-   * Right now it exits after the first in-depth run, 
-   * after listing the first bunch of files.
-   */
-    if (!fs.existsSync(myPath)){ //No Path Error
-          console.log("Couldn't find directory: ",myPath);
-          return;
-    } //Exits
-  if(files[i]){
-    console.log("files[i]: ", files[i]);
+const fromDir = (myPath, i=0, result = [], d=0) => {
+  if (!fs.existsSync(myPath)){ //No Path Error
+    console.log("ERR: Couldn't find directory: ",myPath);
+    return "Couldn't find directory";
   }
-    filePath = path.join(myPath,files[i].toString());
-    let stat = fs.lstatSync(filePath)
-    console.log("stat: ", stat)
-    /**************************************/
-  /*Testing error: Can't read toString of underfined. 
-   * Need to exit the directory by working with the path
-   * in depth first looping process. Chop off the file from
-   * the filePath after the file is added. Chop off 
-   * the directory name after all files are added.
-   */
-  
-  if (stat.isDirectory()){
-      console.log('>>Reading directory: '+filePath+'/ \n lstatSync output: '+ stat);
-      fromDir(filePath, i=0,result)
+  let files = fs.readdirSync(myPath);
+  if(!files[i]) {
+    return result.join(", ");
+  } 
+  if (!files[i].startsWith('.')) { //skip hidden directory
+    
+    let newPath = path.join(myPath,files[i]); //will pass into the function again if it is a directory; otherwise, use myPath again but iterate i.
+    let stat = fs.lstatSync(newPath);
+    
+    if (stat.isDirectory()){ //isDirectory
+      console.log("\nd=",d,"(+1)", "\nnew directory: ", newPath)
+      return fromDir(newPath, i=0,result, d+1);
+    } else if (stat.isFile()) { //isFile
+      result.push(files[i]);
+      console.log("i=",i,"\nfile added, ", files[i], "\nnext file: ", files[i+1]);
+      if(files[i+1]===undefined) { //if next dosn't exist
+        console.log("last item on the list attempts to switch the directory to ", myPath.substring(0, myPath.lastIndexOf("/")));
+        return fromDir(myPath.substring(0, myPath.lastIndexOf("/")), d, result, d);
+      } else {
+        
+        return fromDir(myPath, i+1, result, d);
+      }
     }
-    result.push(filePath);
-  console.log('-- found: ',filePath);
+  }
 
-  /*Recurses for the next file*/
-  fromDir(filePath, i+1, result)
-}; //Close Function
+//various exits
 
-console.log(fromDir('/home/irishka2863/'));
+    /*console.log("1. current file: ", files[i]);
+  let newPath = path.join(myPath,files[i]); //will pass into the function again if it is a directory; otherwise, use myPath again but iterate i.
+  let stat = fs.lstatSync(newPath);
+  console.log("2. myPath: ", myPath);
+  console.log("3. newPath: ", newPath);
+  console.log("4. is it a dir? ", stat.isDirectory())
+  if (stat.isDirectory()){
+    console.log("5. moving to ", files[i])
+    fromDir(newPath, i=0,result)
+    console.log(i, ": i after isDirectory check"); //if dir, go in to newPath& reset the index
+  } else if(stat.isFile()) { //if file, push it to result and ask for the next file in the myPath dir.
+    result.push(files[i]);
+    console.log("5. file added, ", files[i]);
+    fromDir(myPath, i+1, result);
+    console.log(i, ": i after isFile check")
+  }*/
+  console.log(i, ": i at the end of the whole function")
+  return result;
+};
+
+console.log(fromDir('/home/irishka2863/curriculum/curriculum/'));
