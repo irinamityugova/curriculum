@@ -16,5 +16,5 @@ const handle = (req, res) => {
   if (err) throw err;
   });
 };
-app.get('/', handle);
+app.get('/users', handle);
 app.listen(5569);
