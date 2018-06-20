@@ -7,10 +7,17 @@
  * @param {function} c
  */
 
-const solution = (a, b, c) => {
+const solution = (a, b, c, s) => {
+  const Timeouts = (sec=b) => {
+    if(sec === a || sec === b) {
+      c();
+    }
+    if(sec === 0)return;
+    Timeouts(sec-1);
+  };
+  return Timeouts(s);
 };
 
 module.exports = {
   solution,
 };
-
