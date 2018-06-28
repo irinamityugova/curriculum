@@ -5,7 +5,7 @@ const fs = require('fs');
 const express = require('express');
 const app = express();
 const multer  = require('multer');
-const upload = multer({dest:"uploads/",});
+const upload = multer({dest:"uploads/",}); //take a look for github page for multer.
 
 const db = {
   getData: (cb) => {
@@ -48,7 +48,7 @@ ${data}
 }) //app.get end
 
 
-app.use(express.static('uploads'))
+app.use(express.static('uploads')) //default to assign this folder for the root. You can specify the path as the app.use("/something", express.static('uploads')) source: express site
 
 app.post('/upload', upload.array('myFile'), (req, res) => {
   if(req.files[0]){
