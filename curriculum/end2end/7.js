@@ -8,7 +8,7 @@
 const fs = require("fs");
 const express = require("express");
 const app = express();
-
+const cookieParser = require("cookie-parser");
 const db = {
     getData: (cb) => {
           fs.readFile('messages.txt', (err, data) => {
@@ -21,6 +21,32 @@ const db = {
         }
 };
 
+app.use(cookieParser())
+ 
+app.get("/login", (req, res) => {
+  res.send(`
+    <h1>Chat Login</h1>
+    <form>
+    Name: <input type="text" id="nameInput"></input>
+    <input type="button" onclick="setCookie()">Submit</input>
+    </form>
+    <script>
+    console.log(0);
+    const setCookie = () => {
+      console.log(1);
+      let user = document.getElementById("nameInput").value
+      window.location = "/setCookie?name=".concat(user)
+    };
+    </script>
+  `)
+})
+
+app.get("/setCookie", (req, res) => {
+  console.log(2);
+  res.cookie('uid', req.query.name)
+  res.send("Setting up your name, "+req.query.name)
+})
+
 
 app.get("/messages", (req, res) => {
   db.getData((data)=>{
@@ -28,10 +54,11 @@ app.get("/messages", (req, res) => {
   })})
 
 app.get('/newMessage', (req, res) => {
-db.getData((data)=>{
-  db.writeData({"name": [req.query.name].concat(data.name)});
+  const userName = req.cookies.uid;
+  db.getData((data)=>{
+  db.writeData({"name": [userName+": "+req.query.name].concat(data.name)});
 })  
-  res.json(req.query);
+  res.json(req.query)
 });
 
 app.get('/chat', (req, res) => {
@@ -48,7 +75,7 @@ db.getData((d)=>{
   <script>
   const submit = () => {
   const val = document.getElementsByClassName('input')[0].value;
-  fetch("https://irinamityugova.garagescript.org/newMessage?name="+val)
+  fetch("https://irinamityugova.garagescript.org/newMessage?name="+val, {credentials: "include"})
   document.getElementsByClassName('input')[0].value = "";
    };
 
