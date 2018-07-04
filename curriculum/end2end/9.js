@@ -18,10 +18,34 @@ const app = express();
 app.get("/takePicture", (req, res) => {
   res.send(`
   <h1>Take a Picture</h1>
-  <video style="height: 200px; width: 350px;" id="video" autoplay></video>
-  <input type="text" id="input" />
+  <div class="flex">
+  <div class="picture">
+  <video style="width: 350px;" id="video" autoplay></video>
   <button id="submit">Submit</button>
-  <canvas style="height: 480; width: 640;" id="myCanvas"></canvas>
+  </div>
+  <canvas style="width:350; height:262" id="myCanvas"></canvas>
+  </div>
+  <style>
+    video, button, canvas{
+      display: block;
+      margin: 10px;
+    }
+    canvas{
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px;
+    display: none;
+    }
+    .picture{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    }
+    .flex{
+    display: flex;
+    flex-wrap: wrap;
+    }
+  </style>
+  
   <script>
   const video = document.getElementById('video');
   const canvas = document.getElementById('myCanvas');
@@ -33,7 +57,8 @@ app.get("/takePicture", (req, res) => {
   });
 
   document.getElementById("submit").addEventListener("click", () => {
-  context.drawImage(video, 0, 0, 640, 480);
+  context.drawImage(video, 0, 0, 300, 150);
+  document.getElementById("myCanvas").style.display = "block";
   });
   </script>
   `)
